@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "application1",
+    "slug": "application1",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": ["ACCESS_FINE_LOCATION"]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+ 
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+   
+    
+  }
+}
