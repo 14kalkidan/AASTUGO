@@ -5,8 +5,8 @@ export default function _layout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'blue',
-        tabBarInactiveTintColor: '#888',
+        tabBarActiveTintColor: '#364CB4',
+        tabBarInactiveTintColor: '#95B8EE',
         headerShown: false,
       }}
     >

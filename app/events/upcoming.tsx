@@ -21,9 +21,9 @@ if (Platform.OS === 'android') {
 const events = [
   {
     id: 1,
-    title: 'some day',
-    location: 'Blue Carpet',
-    time: '10:00 PM',
+    title: 'Tech Symposium',
+    location: 'Main Auditorium',
+    time: 'May 15 • 2:00 PM',
     image: require('@/assets/images/c.jpeg'),
     details: {
       guests: 'Developers from Brana Software Solutions',
@@ -34,9 +34,9 @@ const events = [
   },
   {
     id: 2,
-    title: 'outdoor movie',
-    location: 'Auditorium',
-    time: '8:00 PM',
+    title: 'Campus Tour',
+    location: 'Admissions Office',
+    time: 'May 16 • 10:00 AM',
     image: require('@/assets/images/f.jpeg'),
     details: {
       guests: 'Local Bands & Choir',
@@ -47,9 +47,9 @@ const events = [
   },
   {
     id: 3,
-    title: 'Pjama night',
-    location: 'Gallery',
-    time: '2:00 PM',
+    title: 'Pajama Night',
+    location: 'Student Gallery',
+    time: 'May 18 • 8:00 PM',
     image: require('@/assets/images/k.jpeg'),
     details: {
       guests: 'Visual artists & designers',
@@ -60,7 +60,7 @@ const events = [
   },
 ];
 
-export default function OngoingEvents() {
+export default function UpcomingEvents() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const router = useRouter();
 
@@ -70,63 +70,97 @@ export default function OngoingEvents() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Navbar */}
-      <View style={styles.navbar}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color="#364CB4" />
+        </TouchableOpacity>
         <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
-        <View style={styles.navIcons}>
-          <Ionicons name="notifications-outline" size={24} color="#B0B005" />
+        <View style={styles.headerIcons}>
+          <TouchableOpacity>
+            <Ionicons name="notifications-outline" size={24} color="#364CB4" />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/profile')}>
-  <Ionicons name="person-circle-outline" size={30} color="black" />
-</TouchableOpacity>
-          <Link href="/menu">
-            <Ionicons name="menu" size={28} color="black" />
-          </Link>
+            <Ionicons name="person-circle-outline" size={26} color="#364CB4" />
+          </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity onPress={() => router.back()} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-  <Ionicons name="arrow-back" size={22} color="orange" />
-</TouchableOpacity>
 
-      {/* Event Toggle Buttons */}
-      <View style={styles.toggleContainer}>
-        <TouchableOpacity style={[styles.toggleBtn , styles.activeBtn]}>
-          <Text style={[styles.toggleText, styles.activeText]}>Upcoming</Text>
+      {/* Event Tabs */}
+      <View style={styles.tabContainer}>
+        <TouchableOpacity style={[styles.tabButton, styles.activeTab]}>
+          <Text style={[styles.tabText, styles.activeTabText]}>Upcoming</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.toggleBtn]} onPress={() => router.push('/(tabs)/event')}>
-          <Text style={styles.toggleText}>Ongoing</Text>
+        <TouchableOpacity 
+          style={styles.tabButton}
+          onPress={() => router.push('/(tabs)/event')}
+        >
+          <Text style={styles.tabText}>Ongoing</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.toggleBtn } onPress={() => router.push('/events/completed')}>
-          <Text style={styles.toggleText}>Completed</Text>
+        <TouchableOpacity 
+          style={styles.tabButton}
+          onPress={() => router.push('/events/completed')}
+        >
+          <Text style={styles.tabText}>Completed</Text>
         </TouchableOpacity>
       </View>
-      {/* Events */}
-      <Text style={styles.header}>Upcoming Events</Text>
+
+      {/* Page Title */}
+      <Text style={styles.pageTitle}>Upcoming Events</Text>
+
+      {/* Events List */}
       {events.map((event) => (
-        <View key={event.id} style={styles.card}>
-          <View style={styles.cardRow}>
-            <Image source={event.image} style={styles.thumb} />
-            <View style={styles.info}>
-              <Text style={styles.title}>{event.title}</Text>
-              <TouchableOpacity onPress={() => router.push('/map')}>
-                <Text style={styles.meta}>
-                  <Ionicons name="location-outline" size={14} color="red" /> {event.location}
-                </Text>
-              </TouchableOpacity>
-              <Text style={styles.meta}> {event.time}</Text>
+        <View key={event.id} style={styles.eventCard}>
+          {/* Event Header */}
+          <TouchableOpacity
+            style={styles.eventHeader}
+            onPress={() => router.push('/map')}
+          >
+            <Image source={event.image} style={styles.eventImage} />
+            <View style={styles.eventInfo}>
+              <Text style={styles.eventTitle}>{event.title}</Text>
+              <View style={styles.eventMeta}>
+                <Ionicons name="location-outline" size={14} color="#95B8EE" />
+                <Text style={styles.eventLocation}> {event.location}</Text>
+              </View>
+              <View style={styles.eventMeta}>
+                <Ionicons name="time-outline" size={14} color="#95B8EE" />
+                <Text style={styles.eventTime}> {event.time}</Text>
+              </View>
             </View>
-            <TouchableOpacity onPress={() => toggleDetails(event.id)} style={styles.dropdown}>
-              <Ionicons name={expandedId === event.id ? 'chevron-up' : 'chevron-down'} size={20} color="#555" />
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
+
+          {/* Expandable Details */}
+          <TouchableOpacity 
+            style={styles.detailsToggle} 
+            onPress={() => toggleDetails(event.id)}
+          >
+            <Ionicons 
+              name={expandedId === event.id ? 'chevron-up' : 'chevron-down'} 
+              size={20} 
+              color="#364CB4" 
+            />
+          </TouchableOpacity>
+
           {expandedId === event.id && (
-            <View style={styles.details}>
-              <Text style={styles.detailText}>
-                <Text style={styles.bold}>Guests: </Text>{event.details.guests}{'\n\n'}
-                <Text style={styles.bold}>Food: </Text>{event.details.food}{'\n\n'}
-                <Text style={styles.bold}>Bring: </Text>{event.details.bring}{'\n\n'}
-                <Text style={styles.bold}>Do not bring: </Text>{event.details.avoid}
-              </Text>
+            <View style={styles.detailsContainer}>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Guests:</Text>
+                <Text style={styles.detailValue}>{event.details.guests}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Food:</Text>
+                <Text style={styles.detailValue}>{event.details.food}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Bring:</Text>
+                <Text style={styles.detailValue}>{event.details.bring}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Avoid:</Text>
+                <Text style={styles.detailValue}>{event.details.avoid}</Text>
+              </View>
             </View>
           )}
         </View>
@@ -137,98 +171,119 @@ export default function OngoingEvents() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    padding: 16,
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 24,
   },
-  navbar: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40,
-    paddingBottom: 10,
+    paddingTop: 48,
+    paddingBottom: 24,
   },
   logo: {
-    width: 60,
-    height: 60,
+    width: 48,
+    height: 48,
   },
-  navIcons: {
+  headerIcons: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 16,
   },
-  toggleContainer: {
+  tabContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
-    marginTop: 10,
-    gap: 12,
+    justifyContent: 'space-between',
+    marginBottom: 24,
+    backgroundColor: '#F8FAFF',
+    borderRadius: 12,
+    padding: 4,
   },
-  toggleBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    backgroundColor: '#eee',
-    borderRadius: 20,
+  tabButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 8,
   },
-  toggleText: {
+  activeTab: {
+    backgroundColor: '#E7F1AB',
+  },
+  tabText: {
     fontSize: 14,
-    color: '#666',
+    color: '#95B8EE',
+    fontWeight: '500',
   },
-  activeBtn: {
-    backgroundColor: 'blue',
-  },
-  activeText: {
-    color: '#fff',
+  activeTabText: {
+    color: '#364CB4',
     fontWeight: '600',
   },
-  header: {
-    fontSize: 22,
-    fontWeight: '700',
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#364CB4',
     marginBottom: 16,
   },
-  card: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 14,
-    marginBottom: 20,
+  eventCard: {
+    backgroundColor: '#F8FAFF',
+    borderRadius: 16,
+    marginBottom: 16,
     overflow: 'hidden',
-    elevation: 2,
   },
-  cardRow: {
+  eventHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
+    padding: 16,
   },
-  thumb: {
+  eventImage: {
     width: 100,
     height: 100,
-    borderTopLeftRadius: 14,
-    borderBottomLeftRadius: 14,
+    borderRadius: 12,
   },
-  info: {
+  eventInfo: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingLeft: 16,
+    justifyContent: 'center',
   },
-  title: {
+  eventTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#364CB4',
+    marginBottom: 8,
+  },
+  eventMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 4,
   },
-  meta: {
-    fontSize: 13,
-    color: '#444',
+  eventLocation: {
+    fontSize: 14,
+    color: '#95B8EE',
   },
-  dropdown: {
-    padding: 10,
+  eventTime: {
+    fontSize: 14,
+    color: '#95B8EE',
   },
-  details: {
-    padding: 10,
+  detailsToggle: {
+    padding: 12,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#E7F1AB',
+    alignItems: 'center',
   },
-  detailText: {
-    fontSize: 13,
-    color: '#333',
-    lineHeight: 20,
+  detailsContainer: {
+    padding: 16,
+    paddingTop: 0,
   },
-  bold: {
-    fontWeight: 'bold',
+  detailRow: {
+    flexDirection: 'row',
+    marginBottom: 8,
+  },
+  detailLabel: {
+    width: 80,
+    fontSize: 14,
+    color: '#364CB4',
+    fontWeight: '600',
+  },
+  detailValue: {
+    flex: 1,
+    fontSize: 14,
+    color: '#95B8EE',
   },
 });
